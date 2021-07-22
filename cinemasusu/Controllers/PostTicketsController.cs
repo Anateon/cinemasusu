@@ -35,8 +35,8 @@ namespace cinemasusu.Controllers
                     };
                     context.Tickets.Add(tmpTicket);
                     tickets.Add(tmpTicket);
+                    context.SaveChanges();
                 }
-                context.SaveChanges(); //commit
             }
 
             using (var context = new DataContext())
