@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using cinemasusu.Models;
 
 namespace cinemasusu.Controllers
 {
@@ -17,7 +18,7 @@ namespace cinemasusu.Controllers
         [HttpGet]
         public decimal Get(int ID)
         {
-            using (var context = new cinemaContext())
+            using (var context = new DataContext())
             {
                 var session = context.Sessions.Find(ID);
                 var filmPrice = context.Films.Find(session.FilmId).Price;

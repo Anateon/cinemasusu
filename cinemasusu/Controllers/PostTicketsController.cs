@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using cinemasusu.Authorization;
 using Microsoft.EntityFrameworkCore;
+using cinemasusu.Models;
 
 namespace cinemasusu.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PostTicketsController : ControllerBase
@@ -18,7 +21,7 @@ namespace cinemasusu.Controllers
         public IEnumerable<object> Post(Dictionary<string, string> a)
         {
             List<Ticket> tickets = new List<Ticket>();
-            using (var context = new cinemaContext())
+            using (var context = new DataContext())
             {
                 int _sessionsId = int.Parse(a["sessionID"]);
                 a.Remove("sessionID");
@@ -28,7 +31,7 @@ namespace cinemasusu.Controllers
                     {
                         PlacesId = int.Parse(VARIABLE.Key),
                         SesssionsId = _sessionsId,
-                        UserId = 2
+                        UserId = ((User)this.HttpContext.Items["User"]).Id
                     };
                     context.Tickets.Add(tmpTicket);
                     tickets.Add(tmpTicket);
@@ -36,7 +39,7 @@ namespace cinemasusu.Controllers
                 context.SaveChanges(); //commit
             }
 
-            using (var context = new cinemaContext())
+            using (var context = new DataContext())
             {
                 foreach (var VARIABLE in tickets)
                 {

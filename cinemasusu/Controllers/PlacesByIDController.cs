@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using cinemasusu.Authorization;
+using cinemasusu.Models;
 
 namespace cinemasusu.Controllers
 {
@@ -16,7 +18,7 @@ namespace cinemasusu.Controllers
         [HttpGet]
         public IEnumerable<object> Get(int ID) //session
         {
-            using (var context = new cinemaContext())
+            using (var context = new DataContext())
             {
                 // http://localhost:14050/PlacesByID?ID=8
                 Session _session = context.Sessions.Find(ID);

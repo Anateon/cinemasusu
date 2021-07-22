@@ -1,6 +1,7 @@
 ﻿using cinemasusu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using cinemasusu.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +17,7 @@ namespace cinemasusu.Controllers
         [HttpGet]
         public IEnumerable<Object> Get()
         {
-            using (var context = new cinemaContext())
+            using (var context = new DataContext())
             {
                 //var selectActualFilms = context.Films.Join(
                 //    context.Sessions,

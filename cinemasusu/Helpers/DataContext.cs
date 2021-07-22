@@ -1,4 +1,5 @@
 ﻿using System;
+using cinemasusu.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -6,13 +7,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace cinemasusu.Models
 {
-    public partial class cinemaContext : DbContext
+    public partial class DataContext : DbContext
     {
-        public cinemaContext()
+        public DataContext()
         {
         }
 
-        public cinemaContext(DbContextOptions<cinemaContext> options)
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }
@@ -206,7 +207,9 @@ namespace cinemasusu.Models
                 entity.HasIndex(e => new { e.SesssionsId, e.PlacesId }, "IX_tickets")
                     .IsUnique();
 
-                entity.Property(e => e.TicketId).HasColumnName("ticket_id");
+                entity.Property(e => e.TicketId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ticket_id");
 
                 entity.Property(e => e.PlacesId).HasColumnName("places_id");
 
@@ -234,56 +237,12 @@ namespace cinemasusu.Models
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_tickets_users");
+                    .HasConstraintName("FK_tickets_Users1");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("users");
-
-                entity.HasIndex(e => new { e.Login, e.Password }, "IX_users")
-                    .IsUnique();
-
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.Property(e => e.Dob)
-                    .HasColumnType("date")
-                    .HasColumnName("dob");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(70)
-                    .HasColumnName("email")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Login)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("login")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(35)
-                    .HasColumnName("name")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnName("password")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Patronymic)
-                    .HasMaxLength(35)
-                    .HasColumnName("patronymic")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Surname)
-                    .IsRequired()
-                    .HasMaxLength(35)
-                    .HasColumnName("surname")
-                    .IsFixedLength(true);
+                entity.Property(e => e.DateOfBirth).HasColumnType("date");
             });
 
             OnModelCreatingPartial(modelBuilder);
